@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Helios Łomża</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Helios Łomża</h1>
+  </header>
+  <nav class="mobile-nav">
+    <button data-target="events" class="active">Wydarzenia</button>
+    <button data-target="premieres">Premiery</button>
+    <button data-target="repertoire">Repertuar</button>
+  </nav>
+  <main>
+    <section id="events" class="active">
+      <h2>Wydarzenia</h2>
+      <ul id="events-list"></ul>
+    </section>
+    <section id="premieres">
+      <h2>Premiery</h2>
+      <ul id="premieres-list"></ul>
+    </section>
+    <section id="repertoire">
+      <h2>Repertuar</h2>
+      <ul id="repertoire-list"></ul>
+    </section>
+  </main>
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close">×</span>
+      <h3 id="modal-title"></h3>
+      <p id="modal-description"></p>
+    </div>
+  </div>
+
+  <script>
+    const endpoints = [
+      { id: 'events-list', url: '/api/events', ver: false },
+      { id: 'premieres-list', url: '/api/premieres', ver: false },
+      { id: 'repertoire-list', url: '/api/repertoire', ver: true }
+    ];
+
+    async function fetchData(url) {
+      const r = await fetch(url);
+      return r.ok ? await r.json() : [];
+    }
+
+    function openModal(title, desc) {
+      document.getElementById('modal-title').textContent = title;
+      document.getElementById('modal-description').textContent = desc || 'Brak opisu.';
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function createItem(item, withVer) {
+      const li = document.createElement('li');
+      const text = withVer ? `${item.title} (${item.version})` : `${item.title} – ${item.date}`;
+      li.textContent = text;
+      li.classList.add('item');
+
+      li.addEventListener('click', () => {
+        openModal(item.title, item.description || 'Brak opisu.');
+      });
+
+      return li;
+    }
+
+    async function render() {
+      for (const e of endpoints) {
+        const list = await fetchData(e.url);
+        const ul = document.getElementById(e.id);
+        ul.innerHTML = '';
+
+        if (e.id === 'events-list') {
+          const grouped = {};
+          list.forEach(event => {
+            if (!grouped[event.category]) grouped[event.category] = [];
+            grouped[event.category].push(event);
+          });
+
+          Object.keys(grouped).forEach(category => {
+            const catHeader = document.createElement('li');
+            catHeader.textContent = category;
+            catHeader.classList.add('bold-category');
+            ul.appendChild(catHeader);
+
+            grouped[category].forEach(event => {
+              ul.appendChild(createItem(event, false));
+            });
+          });
+        } else {
+          list.forEach(i => ul.appendChild(createItem(i, e.ver)));
+        }
+      }
+    }
+
+    function setupTabs() {
+      document.querySelectorAll('.mobile-nav button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
+          document.querySelectorAll('.mobile-nav button').forEach(b => b.classList.remove('active'));
+          document.getElementById(btn.dataset.target).classList.add('active');
+          btn.classList.add('active');
+        });
+      });
+    }
+
+    function setupModal() {
+      document.querySelector('.modal .close').addEventListener('click', () => {
+        document.getElementById('modal').classList.remove('active');
+      });
+      document.querySelector('.modal').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal')) {
+          document.getElementById('modal').classList.remove('active');
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      render();
+      setupTabs();
+      setupModal();
+    });
+  </script>
+</body>
+</html>

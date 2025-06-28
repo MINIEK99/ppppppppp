@@ -1,0 +1,38 @@
+{
+  "events": [
+    {"category":"Filmowe Poranki","title":"Strażak Sam, cz. 5","date":"niedziela, 20 lipca 2025","description":"Kolejna część przygód dzielnego Strażaka Sama i jego przyjaciół."},
+    {"category":"Kino Konesera","title":"Małe miłości","date":"poniedziałek, 30 czerwca 2025","description":"Poruszająca historia o relacjach międzypokoleniowych i samotności."},
+    {"category":"Maraton Filmowy","title":"Maraton Władcy Pierścieni","date":"piątek, 22 sierpnia 2025","description":"Epoka podróż po Śródziemiu w filmowej trylogii Petera Jacksona."},
+    {"category":"Kino Kobiet","title":"Materialiści","date":"środa, 9 lipca 2025","description":"Komedia romantyczna o swatce, która spełnia marzenia klientów."},
+    {"category":"Kultura Dostępna","title":"Dziadku, wiejemy!","date":"czwartek, 3 lipca 2025","description":"Ciepła opowieść o relacji dziadka i córki oraz odwadze zmian."},
+    {"category":"Helios dla Dzieci","title":"Basia. Mam swój świat","date":"sobota, 5 lipca 2025","description":"Przedpremierowe seanse przygód rezolutnej Basi."},
+    {"category":"Helios Anime","title":"Szopy w natarciu","date":"niedziela, 13 lipca 2025","description":"Ekologiczna przypowieść Studia Ghibli o przyjaźni z naturą."},
+    {"category":"Helios Anime","title":"AKIRA","date":"środa, 16 lipca 2025","description":"Kultowy film anime o Neo Tokio po wojnie nuklearnej."},
+    {"category":"Helios na Scenie","title":"Dziewczyna z Kolonii","date":"sobota, 19 lipca 2025","description":"Muzyczna podróż z jazzowym pianistą w tle."},
+    {"category":"Maraton Filmowy","title":"Harry Potter: Mini Maraton cz. 1–2","date":"piątek, 4 lipca 2025","description":"Pokazy Kamień Filozoficzny i Komnata Tajemnic na dużym ekranie."},
+    {"category":"Maraton Filmowy","title":"Harry Potter: Mini Maraton cz. 3–4","date":"piątek, 18 lipca 2025","description":"Seanse Więzień Azkabanu i Czara Ognia dla fanów przygód czarodziejów."},
+    {"category":"Maraton Filmowy","title":"Harry Potter: Mini Maraton cz. 5–6","date":"piątek, 1 sierpnia 2025","description":"Pokazy Zakon Feniksa i Księcia Półkrwi w klimatycznej atmosferze."},
+    {"category":"Maraton Filmowy","title":"Harry Potter: Mini Maraton cz. 7–8","date":"piątek, 15 sierpnia 2025","description":"Finałowa odsłona maratonu z Insygniami Śmierci cz. 1 i 2."}
+  ],
+  "premieres": [
+    {"title":"Jurassic World: Odrodzenie","date":"od 4 lipca 2025","description":"Najnowsza odsłona serii z dinozaurami w tropikalnym parku."},
+    {"title":"Brzydka siostra","date":"od 4 lipca 2025","description":"Polska komedia o akceptacji siebie i relacjach rodzinnych."},
+    {"title":"Heidi ratuje rysia","date":"od 4 lipca 2025","description":"Klasyczna przygoda Heidi w ratowaniu dzikiej fauny Alp."},
+    {"title":"Superman","date":"od 11 lipca 2025","description":"Reboot kultowego bohatera DC w nowej, epickiej historii."},
+    {"title":"Basia. Mam swój świat","date":"od 11 lipca 2025","description":"Kinowa premiera przygód pięcioletniej Basi."},
+    {"title":"Smerfy. Wielki film","date":"od 18 lipca 2025","description":"Wyprawa Smerfów do prawdziwego świata w nowej animacji."},
+    {"title":"Koszmar minionego lata","date":"od 18 lipca 2025","description":"Horror, który obudzi wspomnienia kultowej serii z lat 90."},
+    {"title":"Fantastyczna 4: Pierwsze kroki","date":"od 25 lipca 2025","description":"Opowieść o rodzinie Marvela w retro scenerii lat 60."},
+    {"title":"O psie, który jeździł koleją 2","date":"od 8 sierpnia 2025","description":"Ciepła opowieść o przyjaźni człowieka i psa."}
+  ],
+  "repertoire": [
+    {"title":"F1","version":"2D","description":"Dramat sportowy o kulisach Formuły 1."},
+    {"title":"M3GAN 2.0","version":"2D","description":"Thriller o zabójczej lalce android."},
+    {"title":"Jak wytresować smoka","version":"2D","description":"Animowana opowieść o przyjaźni chłopca ze smokiem."},
+    {"title":"Lilo i Stitch","version":"2D","description":"Kultowa komedia familijna z kosmicznym przyjacielem."},
+    {"title":"28 lat później","version":"2D","description":"Kontynuacja postapokaliptycznej opowieści o zombiakach."},
+    {"title":"Elio","version":"2D","description":"Animacja o chłopcu marzącym o kosmicznych podróżach."},
+    {"title":"Materialiści","version":"2D","description":"Romantyczna komedia o miłości i randkowaniu."},
+    {"title":"Rytuał","version":"2D","description":"Horror o mrocznych obrzędach w głuszy lasu."}
+  ]
+}
