@@ -18,6 +18,13 @@
   <main>
     <section id="events" class="active">
       <h2>Wydarzenia</h2>
+      <div class="sort-control">
+        <label for="sort-select">Sortuj:</label>
+        <select id="sort-select">
+          <option value="default">Domyślnie</option>
+          <option value="date">Według daty</option>
+        </select>
+      </div>
       <ul id="events-list"></ul>
     </section>
     <section id="premieres">
@@ -34,6 +41,7 @@
       <span class="close">×</span>
       <h3 id="modal-title"></h3>
       <p id="modal-description"></p>
+      <div id="modal-trailer" class="trailer"></div>
     </div>
   </div>
 
@@ -49,49 +57,85 @@
       return r.ok ? await r.json() : [];
     }
 
-    function openModal(title, desc) {
+    function openModal(title, desc, trailer) {
       document.getElementById('modal-title').textContent = title;
       document.getElementById('modal-description').textContent = desc || 'Brak opisu.';
+      const container = document.getElementById('modal-trailer');
+      if (trailer) {
+        container.innerHTML = `<iframe src="${trailer}" frameborder="0" allowfullscreen></iframe>`;
+        container.style.display = 'block';
+      } else {
+        container.innerHTML = '';
+        container.style.display = 'none';
+      }
       document.getElementById('modal').classList.add('active');
     }
 
-    function createItem(item, withVer) {
+    const months = {
+      'stycznia': 0, 'lutego': 1, 'marca': 2, 'kwietnia': 3,
+      'maja': 4, 'czerwca': 5, 'lipca': 6, 'sierpnia': 7,
+      'września': 8, 'października': 9, 'listopada': 10, 'grudnia': 11
+    };
+
+    function parseDate(str) {
+      const m = str.match(/(\d{1,2})\s+(stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|września|października|listopada|grudnia)\s+(\d{4})/);
+      if (!m) return new Date(0);
+      return new Date(parseInt(m[3], 10), months[m[2]], parseInt(m[1], 10));
+    }
+
+    function createItem(item, withVer, showCategory = false) {
       const li = document.createElement('li');
-      const text = withVer ? `${item.title} (${item.version})` : `${item.title} – ${item.date}`;
+      let text;
+      if (withVer) {
+        text = `${item.title} (${item.version})`;
+      } else if (showCategory) {
+        text = `${item.title} – ${item.category} – ${item.date}`;
+      } else {
+        text = `${item.title} – ${item.date}`;
+      }
       li.textContent = text;
       li.classList.add('item');
 
       li.addEventListener('click', () => {
-        openModal(item.title, item.description || 'Brak opisu.');
+        openModal(item.title, item.description || 'Brak opisu.', item.trailer);
       });
 
       return li;
     }
 
     async function render() {
+      const sortByDate = document.getElementById('sort-select').value === 'date';
       for (const e of endpoints) {
         const list = await fetchData(e.url);
         const ul = document.getElementById(e.id);
         ul.innerHTML = '';
 
         if (e.id === 'events-list') {
-          const grouped = {};
-          list.forEach(event => {
-            if (!grouped[event.category]) grouped[event.category] = [];
-            grouped[event.category].push(event);
-          });
-
-          Object.keys(grouped).forEach(category => {
-            const catHeader = document.createElement('li');
-            catHeader.textContent = category;
-            catHeader.classList.add('bold-category');
-            ul.appendChild(catHeader);
-
-            grouped[category].forEach(event => {
-              ul.appendChild(createItem(event, false));
+          if (sortByDate) {
+            list.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+            list.forEach(event => ul.appendChild(createItem(event, false, true)));
+          } else {
+            const grouped = {};
+            list.forEach(event => {
+              if (!grouped[event.category]) grouped[event.category] = [];
+              grouped[event.category].push(event);
             });
-          });
+
+            Object.keys(grouped).forEach(category => {
+              const catHeader = document.createElement('li');
+              catHeader.textContent = category;
+              catHeader.classList.add('bold-category');
+              ul.appendChild(catHeader);
+
+              grouped[category].forEach(event => {
+                ul.appendChild(createItem(event, false));
+              });
+            });
+          }
         } else {
+          if (sortByDate && list.length && list[0].date) {
+            list.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+          }
           list.forEach(i => ul.appendChild(createItem(i, e.ver)));
         }
       }
@@ -119,11 +163,12 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      render();
-      setupTabs();
-      setupModal();
-    });
+      document.addEventListener('DOMContentLoaded', () => {
+        render();
+        setupTabs();
+        setupModal();
+        document.getElementById('sort-select').addEventListener('change', render);
+      });
   </script>
 </body>
 </html>
