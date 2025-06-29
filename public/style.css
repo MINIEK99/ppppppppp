@@ -115,6 +115,14 @@ li.bold-category {
   border-radius: 4px;
 }
 
+.sort-control {
+  margin-bottom: 1rem;
+}
+
+.sort-control label {
+  margin-right: .5rem;
+}
+
 .modal {
   display: none;
   position: fixed;
