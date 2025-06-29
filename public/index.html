@@ -83,9 +83,16 @@
       return new Date(parseInt(m[3], 10), months[m[2]], parseInt(m[1], 10));
     }
 
-    function createItem(item, withVer) {
+    function createItem(item, withVer, showCategory = false) {
       const li = document.createElement('li');
-      const text = withVer ? `${item.title} (${item.version})` : `${item.title} – ${item.date}`;
+      let text;
+      if (withVer) {
+        text = `${item.title} (${item.version})`;
+      } else if (showCategory) {
+        text = `${item.title} – ${item.category} – ${item.date}`;
+      } else {
+        text = `${item.title} – ${item.date}`;
+      }
       li.textContent = text;
       li.classList.add('item');
 
@@ -104,25 +111,27 @@
         ul.innerHTML = '';
 
         if (e.id === 'events-list') {
-          const grouped = {};
-          list.forEach(event => {
-            if (!grouped[event.category]) grouped[event.category] = [];
-            grouped[event.category].push(event);
-          });
-
-          Object.keys(grouped).forEach(category => {
-            if (sortByDate) {
-              grouped[category].sort((a, b) => parseDate(a.date) - parseDate(b.date));
-            }
-            const catHeader = document.createElement('li');
-            catHeader.textContent = category;
-            catHeader.classList.add('bold-category');
-            ul.appendChild(catHeader);
-
-            grouped[category].forEach(event => {
-              ul.appendChild(createItem(event, false));
+          if (sortByDate) {
+            list.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+            list.forEach(event => ul.appendChild(createItem(event, false, true)));
+          } else {
+            const grouped = {};
+            list.forEach(event => {
+              if (!grouped[event.category]) grouped[event.category] = [];
+              grouped[event.category].push(event);
             });
-          });
+
+            Object.keys(grouped).forEach(category => {
+              const catHeader = document.createElement('li');
+              catHeader.textContent = category;
+              catHeader.classList.add('bold-category');
+              ul.appendChild(catHeader);
+
+              grouped[category].forEach(event => {
+                ul.appendChild(createItem(event, false));
+              });
+            });
+          }
         } else {
           if (sortByDate && list.length && list[0].date) {
             list.sort((a, b) => parseDate(a.date) - parseDate(b.date));
@@ -163,3 +172,4 @@
   </script>
 </body>
 </html>
+public/style.css
