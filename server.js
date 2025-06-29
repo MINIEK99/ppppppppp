@@ -13,7 +13,8 @@ app.get('/api/events', (req, res) => {
     category: event.category,
     title: event.title,
     date: event.date,
-    description: event.description || 'Brak opisu.'
+    description: event.description || 'Brak opisu.',
+    trailer: event.trailer
   })));
 });
 
@@ -21,7 +22,8 @@ app.get('/api/premieres', (req, res) => {
   res.json(data.premieres.map(premiere => ({
     title: premiere.title,
     date: premiere.date,
-    description: premiere.description || 'Brak opisu.'
+    description: premiere.description || 'Brak opisu.',
+    trailer: premiere.trailer
   })));
 });
 
@@ -29,7 +31,8 @@ app.get('/api/repertoire', (req, res) => {
   res.json(data.repertoire.map(movie => ({
     title: movie.title,
     version: movie.version,
-    description: movie.description || 'Brak opisu.'
+    description: movie.description || 'Brak opisu.',
+    trailer: movie.trailer
   })));
 });
 
