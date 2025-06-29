@@ -42,7 +42,34 @@ nav.mobile-nav {
   top: 0;
   z-index: 10;
   box-shadow: var(--shadow);
-@@ -73,110 +73,175 @@ main {
+}
+
+nav.mobile-nav button {
+  background: none;
+  border: none;
+  color: var(--primary);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  transition: all 0.2s;
+}
+
+nav.mobile-nav button:hover {
+  background-color: #eaeaea;
+}
+
+nav.mobile-nav button.active {
+  color: var(--accent);
+  background-color: #fef5cc;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
   max-width: 1200px;
   margin: auto;
 }
@@ -178,21 +205,17 @@ li.bold-category {
 }
 
 .quiz-options button {
-  padding: .6rem 1.2rem;
+  padding: .5rem 1rem;
   border: 1px solid #ddd;
   background: var(--card);
   border-radius: var(--radius);
   cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-  font-size: 1rem;
-  box-shadow: var(--shadow);
+  transition: background 0.2s;
 }
 
 .quiz-options button:hover {
   background: #f7f7f7;
-  transform: scale(1.03);
 }
-
 
 @keyframes fadeIn {
   from { background: rgba(0,0,0,0); }
