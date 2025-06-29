@@ -207,16 +207,26 @@
         btn.addEventListener('click', () => {
           alert(opt === qEvent.date ? 'Dobrze!' : `Niestety. Poprawna odpowiedź to ${qEvent.date}`);
           document.getElementById('quiz-modal').classList.remove('active');
+          document.body.classList.remove('quiz-active');
         });
         container.appendChild(btn);
       });
       document.getElementById('quiz-modal').classList.add('active');
+      document.body.classList.add('quiz-active');
     }
 
     function setupQuiz() {
       const qm = document.getElementById('quiz-modal');
-      qm.querySelector('.close').addEventListener('click', () => qm.classList.remove('active'));
-      qm.addEventListener('click', e => { if (e.target.id === 'quiz-modal') qm.classList.remove('active'); });
+      qm.querySelector('.close').addEventListener('click', () => {
+        qm.classList.remove('active');
+        document.body.classList.remove('quiz-active');
+      });
+      qm.addEventListener('click', e => {
+        if (e.target.id === 'quiz-modal') {
+          qm.classList.remove('active');
+          document.body.classList.remove('quiz-active');
+        }
+      });
       document.getElementById('quiz-start').addEventListener('click', startQuiz);
     }
 
