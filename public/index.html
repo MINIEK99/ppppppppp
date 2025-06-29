@@ -18,6 +18,13 @@
   <main>
     <section id="events" class="active">
       <h2>Wydarzenia</h2>
+      <div class="sort-control">
+        <label for="sort-select">Sortuj:</label>
+        <select id="sort-select">
+          <option value="default">Domyślnie</option>
+          <option value="date">Według daty</option>
+        </select>
+      </div>
       <ul id="events-list"></ul>
     </section>
     <section id="premieres">
@@ -34,6 +41,7 @@
       <span class="close">×</span>
       <h3 id="modal-title"></h3>
       <p id="modal-description"></p>
+      <div id="modal-trailer" class="trailer"></div>
     </div>
   </div>
 
@@ -49,10 +57,30 @@
       return r.ok ? await r.json() : [];
     }
 
-    function openModal(title, desc) {
+    function openModal(title, desc, trailer) {
       document.getElementById('modal-title').textContent = title;
       document.getElementById('modal-description').textContent = desc || 'Brak opisu.';
+      const container = document.getElementById('modal-trailer');
+      if (trailer) {
+        container.innerHTML = `<iframe src="${trailer}" frameborder="0" allowfullscreen></iframe>`;
+        container.style.display = 'block';
+      } else {
+        container.innerHTML = '';
+        container.style.display = 'none';
+      }
       document.getElementById('modal').classList.add('active');
+    }
+
+    const months = {
+      'stycznia': 0, 'lutego': 1, 'marca': 2, 'kwietnia': 3,
+      'maja': 4, 'czerwca': 5, 'lipca': 6, 'sierpnia': 7,
+      'września': 8, 'października': 9, 'listopada': 10, 'grudnia': 11
+    };
+
+    function parseDate(str) {
+      const m = str.match(/(\d{1,2})\s+(stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|września|października|listopada|grudnia)\s+(\d{4})/);
+      if (!m) return new Date(0);
+      return new Date(parseInt(m[3], 10), months[m[2]], parseInt(m[1], 10));
     }
 
     function createItem(item, withVer) {
@@ -62,13 +90,14 @@
       li.classList.add('item');
 
       li.addEventListener('click', () => {
-        openModal(item.title, item.description || 'Brak opisu.');
+        openModal(item.title, item.description || 'Brak opisu.', item.trailer);
       });
 
       return li;
     }
 
     async function render() {
+      const sortByDate = document.getElementById('sort-select').value === 'date';
       for (const e of endpoints) {
         const list = await fetchData(e.url);
         const ul = document.getElementById(e.id);
@@ -82,6 +111,9 @@
           });
 
           Object.keys(grouped).forEach(category => {
+            if (sortByDate) {
+              grouped[category].sort((a, b) => parseDate(a.date) - parseDate(b.date));
+            }
             const catHeader = document.createElement('li');
             catHeader.textContent = category;
             catHeader.classList.add('bold-category');
@@ -92,6 +124,9 @@
             });
           });
         } else {
+          if (sortByDate && list.length && list[0].date) {
+            list.sort((a, b) => parseDate(a.date) - parseDate(b.date));
+          }
           list.forEach(i => ul.appendChild(createItem(i, e.ver)));
         }
       }
@@ -119,11 +154,12 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      render();
-      setupTabs();
-      setupModal();
-    });
+      document.addEventListener('DOMContentLoaded', () => {
+        render();
+        setupTabs();
+        setupModal();
+        document.getElementById('sort-select').addEventListener('change', render);
+      });
   </script>
 </body>
 </html>
