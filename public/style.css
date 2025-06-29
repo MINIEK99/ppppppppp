@@ -180,6 +180,43 @@ li.bold-category {
   color: var(--primary);
 }
 
+.quiz-btn {
+  display: block;
+  margin: 2rem auto;
+  padding: .8rem 1.2rem;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.quiz-btn:hover {
+  background: #001e3c;
+}
+
+.quiz-options {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.quiz-options button {
+  padding: .5rem 1rem;
+  border: 1px solid #ddd;
+  background: var(--card);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.quiz-options button:hover {
+  background: #f7f7f7;
+}
+
 @keyframes fadeIn {
   from { background: rgba(0,0,0,0); }
   to { background: rgba(0,0,0,0.6); }

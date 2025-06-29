@@ -36,12 +36,20 @@
       <ul id="repertoire-list"></ul>
     </section>
   </main>
+  <button id="quiz-start" class="quiz-btn">Quiz</button>
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">×</span>
       <h3 id="modal-title"></h3>
       <p id="modal-description"></p>
       <div id="modal-trailer" class="trailer"></div>
+    </div>
+  </div>
+  <div id="quiz-modal" class="modal">
+    <div class="modal-content">
+      <span class="close">×</span>
+      <h3 id="quiz-question"></h3>
+      <div id="quiz-options" class="quiz-options"></div>
     </div>
   </div>
 
@@ -163,13 +171,62 @@
       });
     }
 
+    let cachedEvents;
+
+    async function getEvents() {
+      if (!cachedEvents) {
+        cachedEvents = await fetchData('/api/events');
+      }
+      return cachedEvents;
+    }
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    async function startQuiz() {
+      const events = await getEvents();
+      if (events.length < 4) return;
+      const qEvent = events[Math.floor(Math.random() * events.length)];
+      const question = `Kiedy odbędzie się "${qEvent.title}"?`;
+      const options = [qEvent.date];
+      while (options.length < 4) {
+        const d = events[Math.floor(Math.random() * events.length)].date;
+        if (!options.includes(d)) options.push(d);
+      }
+      shuffle(options);
+      document.getElementById('quiz-question').textContent = question;
+      const container = document.getElementById('quiz-options');
+      container.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.addEventListener('click', () => {
+          alert(opt === qEvent.date ? 'Dobrze!' : `Niestety. Poprawna odpowiedź to ${qEvent.date}`);
+          document.getElementById('quiz-modal').classList.remove('active');
+        });
+        container.appendChild(btn);
+      });
+      document.getElementById('quiz-modal').classList.add('active');
+    }
+
+    function setupQuiz() {
+      const qm = document.getElementById('quiz-modal');
+      qm.querySelector('.close').addEventListener('click', () => qm.classList.remove('active'));
+      qm.addEventListener('click', e => { if (e.target.id === 'quiz-modal') qm.classList.remove('active'); });
+      document.getElementById('quiz-start').addEventListener('click', startQuiz);
+    }
+
       document.addEventListener('DOMContentLoaded', () => {
         render();
         setupTabs();
         setupModal();
+        setupQuiz();
         document.getElementById('sort-select').addEventListener('change', render);
       });
   </script>
 </body>
 </html>
-public/style.css
