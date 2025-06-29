@@ -41,6 +41,7 @@
       <span class="close">×</span>
       <h3 id="modal-title"></h3>
       <p id="modal-description"></p>
+      <div id="modal-trailer" class="trailer"></div>
     </div>
   </div>
 
@@ -56,9 +57,17 @@
       return r.ok ? await r.json() : [];
     }
 
-    function openModal(title, desc) {
+    function openModal(title, desc, trailer) {
       document.getElementById('modal-title').textContent = title;
       document.getElementById('modal-description').textContent = desc || 'Brak opisu.';
+      const container = document.getElementById('modal-trailer');
+      if (trailer) {
+        container.innerHTML = `<iframe src="${trailer}" frameborder="0" allowfullscreen></iframe>`;
+        container.style.display = 'block';
+      } else {
+        container.innerHTML = '';
+        container.style.display = 'none';
+      }
       document.getElementById('modal').classList.add('active');
     }
 
@@ -81,7 +90,7 @@
       li.classList.add('item');
 
       li.addEventListener('click', () => {
-        openModal(item.title, item.description || 'Brak opisu.');
+        openModal(item.title, item.description || 'Brak opisu.', item.trailer);
       });
 
       return li;
