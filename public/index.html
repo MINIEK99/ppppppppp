@@ -215,8 +215,14 @@
 
     function setupQuiz() {
       const qm = document.getElementById('quiz-modal');
-      qm.querySelector('.close').addEventListener('click', () => qm.classList.remove('active'));
-      qm.addEventListener('click', e => { if (e.target.id === 'quiz-modal') qm.classList.remove('active'); });
+      qm.querySelector('.close').addEventListener('click', () => {
+        qm.classList.remove('active');
+      });
+      qm.addEventListener('click', e => {
+        if (e.target.id === 'quiz-modal') {
+          qm.classList.remove('active');
+        }
+      });
       document.getElementById('quiz-start').addEventListener('click', startQuiz);
     }
 
